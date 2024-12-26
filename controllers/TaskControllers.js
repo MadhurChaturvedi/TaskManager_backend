@@ -1,23 +1,26 @@
-const asyncHanler = require('express-async-handler')
+const asyncHandler = require('express-async-handler');
+const Task = require('../model/taskModel');
 
 
-const getTask = asyncHanler(async (req, res) => {
-    res.json({ message: "Get Task" })
+const getTask = asyncHandler(async (req, res) => {
+    const allTask = await Task.find()
+    res.json({ message: "Get Task", allTask })
 })
 
-const postTask = async (req, res, next) => {
+const postTask = asyncHandler(async (req, res, next) => {
     try {
-        const { name } = req.body;
-        if (!name) {
+        const { text } = req.body;
+        if (!text) {
             res.status(400); // Use 400 for Bad Request
             throw new Error("Add the Name");
         }
-
-        res.status(200).json({ message: "Task" });
+        const newTask = await Task({ text })
+        const response = await newTask.save()
+        res.status(200).json({ message: "Task", data: [response] });
     } catch (error) {
         next(error); // Pass the error to the custom error handler
     }
-};
+});
 
 const editTask = async (req, res) => {
     res.json({ message: `Edit Task ${req.params.id}` })

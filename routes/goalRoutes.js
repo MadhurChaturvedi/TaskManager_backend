@@ -6,7 +6,7 @@ const router = express.Router()
 
 
 router.route("/").get(getTask)
-router.route("/post").post(postTask)
+router.route("/").post(postTask)
 router.route("/:id").put(editTask)
 router.route("/:id").delete(deleteTask)
 
