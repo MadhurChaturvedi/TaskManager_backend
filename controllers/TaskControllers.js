@@ -23,12 +23,23 @@ const postTask = asyncHandler(async (req, res, next) => {
 });
 
 const editTask = async (req, res) => {
-    res.json({ message: `Edit Task ${req.params.id}` })
+    const task = await Task.findById(req.params.id);
+    if (!task) {
+        res.status(400)
+        throw new Error('Task not Found')
+    }
+    const updateTask = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    res.json({ message: `Task Edited Successfully 🐶`, data: [updateTask] })
 }
 
 const deleteTask = async (req, res) => {
-
-    res.json({ message: `Delete Task ${req.params.id}` })
+    const task = await Task.findById(req.params.id);
+    if (!task) {
+        res.status(400)
+        throw new Error('Task not Found')
+    }
+    const deleteTask = await Task.findByIdAndDelete(req.params.id)
+    res.json({ message: `Task Deleted Successfully 😆` })
 }
 
 module.exports = { getTask, postTask, editTask, deleteTask }
