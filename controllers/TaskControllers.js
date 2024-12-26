@@ -1,8 +1,9 @@
-const { Error } = require("mongoose");
+const asyncHanler = require('express-async-handler')
 
-const getTask = async (req, res) => {
+
+const getTask = asyncHanler(async (req, res) => {
     res.json({ message: "Get Task" })
-}
+})
 
 const postTask = async (req, res, next) => {
     try {
