@@ -70,7 +70,7 @@ const loginUser = asyncHandler(async (req, res, next) => {
 })
 
 const getUser = asyncHandler(async (req, res) => {
-    res.json({ message: 'Register user' })
+    res.json({ message: ' This is me' })
 })
 
 
