@@ -1,20 +1,23 @@
 const asyncHandler = require('express-async-handler');
-const Task = require('../model/taskModel');
-
+const Task = require('../model/taskModel.js');
+const User = require('../model/userModel.js')
 
 const getTask = asyncHandler(async (req, res) => {
-    const allTask = await Task.find()
+    const allTask = await Task.find({ user: req.user.id })
+
     res.json({ message: "Get Task", allTask })
 })
 
 const postTask = asyncHandler(async (req, res, next) => {
     try {
-        const { text } = req.body;
-        if (!text) {
+        if (!req.body.text) {
             res.status(400); // Use 400 for Bad Request
             throw new Error("Add the Name");
         }
-        const newTask = await Task({ text })
+        const newTask = await Task({
+            text: req.body.text,
+            user: req.user.id
+        })
         const response = await newTask.save()
         res.status(200).json({ message: "Task", data: [response] });
     } catch (error) {
@@ -22,24 +25,55 @@ const postTask = asyncHandler(async (req, res, next) => {
     }
 });
 
-const editTask = async (req, res) => {
-    const task = await Task.findById(req.params.id);
-    if (!task) {
-        res.status(400)
-        throw new Error('Task not Found')
+const editTask = async (req, res, next) => {
+    try {
+        const task = await Task.findById(req.params.id);
+        if (!task) {
+            res.status(400)
+            throw new Error('Task not Found')
+        }
+        const user = await User.findById(req.user.id);
+        // Check User
+        if (!user) {
+            res.status(401)
+            throw new Error('User not found')
+        }
+        // make sure the logged in user match the goals user
+        if (task.user.toString() !== user.id) {
+            res.status(401)
+            throw new Error("User not authorized")
+        }
+        const updateTask = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true })
+        res.json({ message: `Task Edited Successfully 🐶`, data: [updateTask] })
+    } catch (error) {
+        next(error)
     }
-    const updateTask = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true })
-    res.json({ message: `Task Edited Successfully 🐶`, data: [updateTask] })
 }
 
-const deleteTask = async (req, res) => {
-    const task = await Task.findById(req.params.id);
-    if (!task) {
-        res.status(400)
-        throw new Error('Task not Found')
+const deleteTask = async (req, res, next) => {
+    try {
+        const task = await Task.findById(req.params.id);
+        if (!task) {
+            res.status(400)
+            throw new Error('Task not Found')
+        }
+
+        const user = await User.findById(req.user.id);
+        // Check User
+        if (!user) {
+            res.status(401)
+            throw new Error('User not found')
+        }
+        // make sure the logged in user match the goals user
+        if (task.user.toString() !== user.id) {
+            res.status(401)
+            throw new Error("User not authorized")
+        }
+        await Task.findByIdAndDelete(req.params.id)
+        res.json({ message: `Task Deleted Successfully 😆` })
+    } catch (error) {
+        next(error)
     }
-    const deleteTask = await Task.findByIdAndDelete(req.params.id)
-    res.json({ message: `Task Deleted Successfully 😆` })
 }
 
 module.exports = { getTask, postTask, editTask, deleteTask }

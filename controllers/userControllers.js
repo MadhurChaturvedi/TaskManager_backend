@@ -70,7 +70,8 @@ const loginUser = asyncHandler(async (req, res, next) => {
 })
 
 const getUser = asyncHandler(async (req, res) => {
-    res.json({ message: ' This is me' })
+    const { _id, name, email } = await User.findById(req.user.id)
+    res.status(200).json({ id: _id, name, email })
 })
 
 

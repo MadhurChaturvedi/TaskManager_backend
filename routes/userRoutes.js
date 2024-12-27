@@ -7,7 +7,7 @@ const userRouter = express.Router()
 
 userRouter.route("/register").post(registerUser)
 userRouter.route("/login").post(loginUser)
-userRouter.route("/me").get(protect,getUser)
+userRouter.route("/me").get(protect, getUser)
 
 
 module.exports = userRouter;

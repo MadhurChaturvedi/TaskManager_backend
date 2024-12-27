@@ -1,6 +1,6 @@
 const express = require('express')
 const dotenv = require('dotenv').config()
-const TaskRouter = require('./routes/goalRoutes.js')
+const TaskRouter = require('./routes/taskRoutes.js')
 var colors = require('@colors/colors');
 // const colors = require('colors')
 var bodyParser = require('body-parser');
@@ -26,5 +26,5 @@ app.get('/Test_api_Task', (req, res) => {
 })
 
 app.listen(PORT, () => {
-    console.log(`server is running on port ${PORT}`.yellow);
+    console.log(`server is running on port https://localhost:${PORT} 👾`.yellow);
 })
