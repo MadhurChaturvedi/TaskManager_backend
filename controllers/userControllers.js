@@ -1,8 +1,8 @@
 const asyncHandler = require('express-async-handler');
 const User = require('../model/userModel.js');
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-
+const generateToken = require('../utils/jwtToken.js')
 const registerUser = asyncHandler(async (req, res, next) => {
     try {
         const { name, email, password } = req.body;
@@ -30,7 +30,8 @@ const registerUser = asyncHandler(async (req, res, next) => {
             res.status(201).json({
                 _id: newUser.id,
                 name: newUser.name,
-                email: newUser.email
+                email: newUser.email,
+                token: generateToken(newUser._id)
             })
         }
         else {
@@ -43,14 +44,32 @@ const registerUser = asyncHandler(async (req, res, next) => {
     }
 })
 
-const loginUser = asyncHandler(async (req, res) => {
-    res.json({ message: 'Register user' })
+const loginUser = asyncHandler(async (req, res, next) => {
+    try {
+        const { email, password } = req.body;
+
+        // Check for user email
+        const user = await User.findOne({ email })
+        if (user && (await bcrypt.compare(password, user.password))) {
+            res.status(201).json({
+                _id: user.id,
+                name: user.name,
+                email: user.email,
+                token: generateToken(user._id)
+            })
+        }
+        else {
+            res.status(400)
+            throw new Error("User doesn't exist")
+        }
+    } catch (error) {
+        next(error)
+    }
 })
 
 const getUser = asyncHandler(async (req, res) => {
     res.json({ message: 'Register user' })
 })
-
 
 
 module.exports = { registerUser, loginUser, getUser }
