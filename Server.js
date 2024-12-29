@@ -8,13 +8,16 @@ const connectDB = require('./db/db.js')
 const app = express()
 const { errorHandler } = require('./middleware/ErrorMiddleware.js')
 const userRouter = require('./routes/userRoutes.js')
+const cors = require('cors')
 
+app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 connectDB();
 const PORT = process.env.PORT || 8080
+
 
 app.use('/api/tasks', TaskRouter)
 app.use('/api/user', userRouter)
