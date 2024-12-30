@@ -12,9 +12,10 @@ const cors = require('cors')
 
 app.use(cors(
     {
-        origin: 'task-manager-frontend-six-ruby.vercel.app',
-        methods: ['GET', 'POST'], // Define allowed methods
-        allowedHeaders: ['Content-Type', 'Authorization'], // Define allowed headers
+        origin: "*",
+        methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+        preflightContinue: false,
+        optionsSuccessStatus: 204
     }
 ))
 app.use(express.json());
