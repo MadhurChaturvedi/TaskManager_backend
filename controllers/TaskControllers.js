@@ -32,14 +32,14 @@ const editTask = async (req, res, next) => {
             res.status(400)
             throw new Error('Task not Found')
         }
-        const user = await User.findById(req.user.id);
+        // const user = await User.findById(req.user.id);
         // Check User
-        if (!user) {
+        if (!req.user) {
             res.status(401)
             throw new Error('User not found')
         }
         // make sure the logged in user match the goals user
-        if (task.user.toString() !== user.id) {
+        if (task.user.toString() !== req.user.id) {
             res.status(401)
             throw new Error("User not authorized")
         }
@@ -58,14 +58,14 @@ const deleteTask = async (req, res, next) => {
             throw new Error('Task not Found')
         }
 
-        const user = await User.findById(req.user.id);
+        // const user = await User.findById(req.user.id);
         // Check User
-        if (!user) {
+        if (!req.user) {
             res.status(401)
             throw new Error('User not found')
         }
         // make sure the logged in user match the goals user
-        if (task.user.toString() !== user.id) {
+        if (task.user.toString() !== req.user.id) {
             res.status(401)
             throw new Error("User not authorized")
         }
