@@ -12,11 +12,17 @@ const cors = require('cors')
 
 // Configure CORS
 app.use(cors({
-    origin: "https://task-manager-frontend-six-ruby.vercel.app", // Replace * with your frontend's URL
+    origin: ["https://task-manager-frontend-six-ruby.vercel.app"], // Array for allowed origins
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
     preflightContinue: false,
     optionsSuccessStatus: 204
 }));
+
+// Ensure preflight requests are handled
+app.options('*', cors());
+
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
