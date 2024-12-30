@@ -12,7 +12,7 @@ const cors = require('cors')
 
 app.use(cors(
     {
-        origin: 'https://taskmanager-backend-9taa.onrender.com',
+        origin: 'task-manager-frontend-six-ruby.vercel.app',
         methods: ['GET', 'POST'], // Define allowed methods
         allowedHeaders: ['Content-Type', 'Authorization'], // Define allowed headers
     }
