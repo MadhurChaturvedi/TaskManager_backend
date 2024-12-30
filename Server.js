@@ -13,7 +13,8 @@ const cors = require('cors')
 app.use(cors(
     {
         origin: 'https://taskmanager-backend-9taa.onrender.com',
-        optionsSuccessStatus: 200
+        methods: ['GET', 'POST'], // Define allowed methods
+        allowedHeaders: ['Content-Type', 'Authorization'], // Define allowed headers
     }
 ))
 app.use(express.json());
