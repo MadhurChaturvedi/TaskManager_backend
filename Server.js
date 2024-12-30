@@ -10,14 +10,13 @@ const { errorHandler } = require('./middleware/ErrorMiddleware.js')
 const userRouter = require('./routes/userRoutes.js')
 const cors = require('cors')
 
-app.use(cors(
-    {
-        origin: "*",
-        methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-        preflightContinue: false,
-        optionsSuccessStatus: 204
-    }
-))
+// Configure CORS
+app.use(cors({
+    origin: "https://task-manager-frontend-six-ruby.vercel.app", // Replace * with your frontend's URL
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
+    optionsSuccessStatus: 204
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
