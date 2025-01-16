@@ -112,8 +112,8 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 ### Connect with Me
 
-- **GitHub**: [Madhur Chaturvedi](https://github.com/MadhurChaturvedi)
-- **LinkedIn**: [Madhur Chaturvedi](https://linkedin.com/in/madhur-chaturvedi-183a16196)
+- **GitHub**: [Link](https://github.com/MadhurChaturvedi)
+- **LinkedIn**: [Link](https://linkedin.com/in/madhur-chaturvedi-183a16196)
 
 
 ### Try to add GoogleAuth 
